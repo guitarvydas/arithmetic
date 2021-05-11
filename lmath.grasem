@@ -1,0 +1,51 @@
+Arithmetic {
+  /* taken from https://github.com/harc/ohm/tree/master/examples/math */
+  exp
+    = space* addExp
+
+  addExp
+    = addExp "+" space* mulExp  -- plus
+    | addExp "-" space* mulExp  -- minus
+    | mulExp
+
+  mulExp
+    = mulExp "*" space* expExp  -- times
+    | mulExp "/" space* expExp  -- divide
+    | expExp
+
+  expExp
+    = priExp "^" space* expExp  -- power
+    | priExp
+
+  priExp
+    = "(" space* exp ")" space*  -- paren
+    | "+" space* priExp   -- pos
+    | "-" space* priExp   -- neg
+    | ident
+    | number
+
+  ident  (an identifier)
+    = letter alnum* space*
+
+  number  (a number)
+    = digit* "." space* digit+ space*  -- fract
+    | digit+ space*             -- whole
+
+}
+
+  exp [@ws e] = [[${ws}${e}]]
+  addExp_plus [e1 op @ws e2] = [[${e1}+${ws}${e2}]]
+  addExp_minus [e1 op @ws e2] = [[${e1}-${ws}${e2}]]
+  addExp [e] = [[${e}]]
+  mulExp_times [e1 op @ws e2] = [[${e1}*${ws}${e2}]]
+  mulExp_divide [e1 op @ws e2] = [[${e1}/${ws}${e2}]]
+  mulExp [e] = [[${e}]]
+  expExp_power[p op @ws e] = [[${p}^${ws}${e}]]
+  expExp [p] = [[${p}]]
+  priExp_paren [lp @ws1 p rp @ws2] = [[(${ws1}${p})${ws2}]]
+  priExp_pos [sign @ws p] = [[+${ws}${p}]]
+  priExp_neg [sign @ws p] = [[-${ws}${p}]]
+  priExp [p] = [[${p}]]
+  ident [l @a @ws] = [[${l}${a}${ws}]]
+  number_fract [@numerator dot @ws1 @denominator @ws2] = [[${numerator}.${ws1}${denominator}${ws2}]]
+  number_whole [@n @ws] = [[${n}${ws}]]
