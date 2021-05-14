@@ -21,3 +21,7 @@ echo
 echo "evaluate in Lisp (SBCL)"
 ./lisprun.bash
 
+echo
+echo "evaluate in WASM (double floats)"
+./wasmrun.bash
+
