@@ -1,5 +1,5 @@
 Arithmetic {
-  /* Lisp code emitter */
+  /* WASM code emitter */
   
   Top = Exp
   
@@ -35,22 +35,29 @@ Arithmetic {
     | digit+             -- whole
 }
 
-  Top [e] = [[
-    (format *standard-output* "~a~%" ${e})
+  Top [e] = 
+{{ 
+   console.log ("(module");
+   console.log ( " (func $custom (result f64)" );
+}}
+[[
+${e})
+  (export "custom" (func $custom))
+)
     ]]
   Exp [e] = [[${e}]]
-  AddExp_plus [e1 op e2] = [[(+ ${e1} ${e2})]]
-  AddExp_minus [e1 op e2] = [[(- ${e1} ${e2})]]
+  AddExp_plus [e1 op e2] = [[${e1}\n${e2}\nf64.add\n]]
+  AddExp_minus [e1 op e2] = [[${e1}\n${e2}\nf64.sub\n]]
   AddExp [e] = [[${e}]]
-  MulExp_times [e1 op e2] = [[(* ${e1} ${e2})]]
-  MulExp_divide [e1 op e2] = [[(/ ${e1} ${e2})]]
+  MulExp_times [e1 op e2] = [[${e1}\n${e2}\nf64.mul\n]]
+  MulExp_divide [e1 op e2] = [[${e1}\n${e2}\nf64.div\n]]
   MulExp [e] = [[${e}]]
-  ExpExp_power[p op e] = [[(expt ${p} ${e})]]
+  ExpExp_power[p op e] = [[(???exp ${p} ${e})]]
   ExpExp [p] = [[${p}]]
   PriExp_paren [lp p rp] = [[${p}]]
   PriExp_pos [sign p] = [[${p}]]
-  PriExp_neg [sign p] = [[-${p}]]
+  PriExp_neg [sign p] = [[${p}\nf64.neg]]
   PriExp [p] = [[${p}]]
-  ident [l @a] = [[${l}${a}]]
-  number_fract [@numerator dot @denominator] = [[${numerator}.${denominator}]]
-  number_whole [@n] = [[${n}]]
+  ident [l @a] = [[???${l}${a}???]]
+  number_fract [@numerator dot @denominator] = [[f64.const ${numerator}.${denominator}]]
+  number_whole [@n] = [[f64.const ${n}]]
