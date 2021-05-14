@@ -38,7 +38,7 @@ Arithmetic {
   Top [e] = 
 {{ 
    console.log ("(module");
-   console.log ( " (func $custom (result f64)" );
+   console.log ( " (func $custom (param $x f64) (param $y f64) (result f64)" );
 }}
 [[
 ${e})
@@ -58,6 +58,6 @@ ${e})
   PriExp_pos [sign p] = [[${p}]]
   PriExp_neg [sign p] = [[${p}\nf64.neg]]
   PriExp [p] = [[${p}]]
-  ident [l @a] = [[???${l}${a}???]]
+  ident [l @a] = [[local.get \$${l}${a}]]
   number_fract [@numerator dot @denominator] = [[f64.const ${numerator}.${denominator}]]
   number_whole [@n] = [[f64.const ${n}]]

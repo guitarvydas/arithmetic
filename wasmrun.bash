@@ -21,3 +21,6 @@ node _wasmmath.js < ex5.math >_temp.wat
 ${WTOOLSDIR}/wat2wasm _temp.wat -o _temp.wasm
 node wasm.js
 
+node _wasmmath.js < ex6.math >_temp.wat
+${WTOOLSDIR}/wat2wasm _temp.wat -o _temp.wasm
+node wasm.js

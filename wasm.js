@@ -12,5 +12,5 @@ async function getws () {
 
 var w = getws ();
 w.then (function (value) {
-    console.log (value.instance.exports.custom ());
+    console.log (value.instance.exports.custom (3,5));
 });
